@@ -44,7 +44,7 @@ uint8_t ip_gateway_Router[4] = {192, 168, 2, 10};    // indirizzo Gateway router
 // -------------FINE definizione della configurazione di rete --DromegaWeb------------------------------------
 
 // Indirizzo MAC per Scheda Ethernet Nodo01
-#define  MAC_INSKETCH const uint8_t MAC_ADDRESS[] = {  0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0xBA}; 
+#define MAC_INSKETCH const uint8_t MAC_ADDRESS[] = {  0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0xBA}; 
 
 
 #define LED_O_N1			0	// This is the memory slot for the logic that handle the light
