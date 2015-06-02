@@ -1,9 +1,9 @@
 /**************************************************************************
- * 
- * Progetto   :    Nodo04 Peer01 RS485 su Bridge01 (Nodo02) - Arduino Uno standalone
- * Autore     :    DromegaWeb
- * Data       :    22 Marzo 2015    -  Inizio - esito OK
- *                 29 Marzo 2015    -  Aggiunto gestione Usart InSketch - esito OK
+* 
+* Progetto   :    Nodo04 Peer01 RS485 su Bridge01 (Nodo02) - Arduino Uno standalone
+* Autore     :    DromegaWeb
+* Data       :    22 Marzo 2015    -  Inizio - esito OK
+*                 29 Marzo 2015    -  Aggiunto gestione Usart InSketch - esito OK
 *                 02 maggio 2015   -  Aggiornato ad arduino 1.6.3
 *
 ****************************************************************************/
@@ -56,11 +56,16 @@ uint8_t ip_gateway_Router[4] = {192, 168, 2, 10};    // indirizzo Gateway router
 #define LIGHT2_N4	     1
 #define LIGHT3_N4            2
 #define LIGHT4_N4	     3
+#define ALLARME              4
+#define WATCHDOG             5
+
+
 
 void setup()
 {
   Souliss_SetAddress(Nodo04_address_peer01_Gw_01, myvNet_subnet, Nodo02_address_Gateway_RS485_01);
 
+ // Set tipici e I/O LED
   Set_T11(LIGHT1_N4);
   Set_T11(LIGHT2_N4);
   Set_T11(LIGHT3_N4);
@@ -73,6 +78,10 @@ void setup()
   pinMode(7, OUTPUT);
   pinMode(8, OUTPUT);					
   pinMode(9, OUTPUT);
+  
+ // Set tipici e I/O ALLARME  
+  Set_T42(ALLARME);      // setta l'allarme
+  pinMode(10, INPUT);    // ingressso pull-up per sensore d'allarme
 
 }
 
@@ -80,22 +89,27 @@ void loop()
 {
   EXECUTEFAST() {						
     UPDATEFAST();
-    FAST_50ms() {
-      
+    FAST_50ms() {      
       DigIn(4, Souliss_T1n_ToggleCmd, LIGHT1_N4);		
       DigIn(5, Souliss_T1n_ToggleCmd, LIGHT2_N4);
-
       Logic_T11( LIGHT1_N4);
       Logic_T11( LIGHT2_N4);
       Logic_T11( LIGHT3_N4);
       Logic_T11( LIGHT4_N4);      
-      
       DigOut(6, Souliss_T1n_Coil, LIGHT1_N4);      	
       DigOut(7, Souliss_T1n_Coil, LIGHT2_N4);
       DigOut(8, Souliss_T1n_Coil, LIGHT3_N4);      	
       DigOut(9, Souliss_T1n_Coil, LIGHT4_N4);
 
     }
+    FAST_510ms() {
+      LowDigIn(10, Souliss_T4n_Alarm, ALLARME);   // ingressso pull-up per sensore d'allarme
+      Logic_T42(ALLARME, Gateway_address);  //esegue locica allarme
+        }
+        
+    FAST_2110ms()   {   // watchdog di controllo presenza dei nodi             
+      mInput(ALLARME) = Watchdog(Gateway_address, WATCHDOG, Souliss_T4n_Alarm);
+        }
 
     FAST_PeerComms()
 

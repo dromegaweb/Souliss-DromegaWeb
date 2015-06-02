@@ -51,42 +51,38 @@ uint8_t ip_gateway_Router[4] = {192, 168, 2, 10};    // indirizzo Gateway router
 #define LED_1_N1			1
 #define LED_2_N1			2
 #define LED_3_N1			3
-#define LED_4_N1			4
-#define LED_5_N1			5
+#define ALLARME  			4
+#define WATCHDOG                        5
+
 
 void setup()
 {
   Initialize();
-  // Set parametri network
   Souliss_SetIPAddress(ip_address_Gw, subnet_mask, ip_gateway_Router);    // Questo nodo sarà --> 192.168.2.11
   SetAsGateway(myvNet_address);                                           // Questo nodo è Gateway Souliss app
-  SetAsPeerNode(E2_address, 1);                       // definisco Nodo02 --- Eth + brige01 RS485
+  SetAsPeerNode(E2_address, 1);                       // definisco Nodo02 Eth + brige01 RS485
   SetAsPeerNode(Nodo04_address_peer01_Gw_01, 2);      // definisco Nodo04 peer01 su bridge01
   SetAsPeerNode(Nodo05_address_peer02_Gw_01, 3);      // definisco Nodo05 peer02 su bridge01
 
 
-  // Set the typical
+  // Set tipici e I/O LED
   Set_T11(LED_O_N1);
   Set_T11(LED_1_N1);
   Set_T11(LED_2_N1);
   Set_T11(LED_3_N1);
-  Set_T12(LED_4_N1);
-  Set_T12(LED_5_N1);
-
-
-
-  // Define inputs, outputs pins
-  pinMode(2, INPUT);					// Hardware pulldown required
-  pinMode(3, INPUT);
-  pinMode(4, INPUT);
-  pinMode(5, INPUT);
-  pinMode(6, INPUT);
-  pinMode(7, INPUT);
-
-  pinMode(8, OUTPUT);					// Power the LED
+  
+  
+  pinMode(2, INPUT);	    // Ingresso pulldown 
+ 
+  pinMode(8, OUTPUT);	    // Power the LED
   pinMode(9, OUTPUT);
   pinMode(10, OUTPUT);
   pinMode(11, OUTPUT);
+  
+  
+ // Set tipici e I/O ALLARME  
+  Set_T41(ALLARME);
+  pinMode(7, INPUT);    // Ingresso pulldown
   pinMode(12, OUTPUT);
   pinMode(13, OUTPUT);
 }
@@ -96,31 +92,30 @@ void loop()
   EXECUTEFAST() {
     UPDATEFAST();
 
-    FAST_30ms() {
-      // Usa PinX per cambiare lo stato
-      DigIn(2, Souliss_T1n_ToggleCmd, LED_O_N1);
-      DigIn(3, Souliss_T1n_ToggleCmd, LED_1_N1);
-      DigIn(4, Souliss_T1n_ToggleCmd, LED_2_N1);
-      DigIn(5, Souliss_T1n_ToggleCmd, LED_3_N1);
-      DigIn(6, Souliss_T1n_ToggleCmd, LED_4_N1);
-      DigIn(7, Souliss_T1n_ToggleCmd, LED_5_N1);
-
-      // Esegue la logica che gestisce i LED
-      Logic_T11( LED_O_N1);
+    FAST_30ms() {      
+      DigIn(2, Souliss_T1n_ToggleCmd, LED_O_N1);  // Usa Pin2 per cambiare lo stato pull-down
+      Logic_T11( LED_O_N1);                       // Esegue la logica che gestisce i LED
       Logic_T11( LED_1_N1);
       Logic_T11( LED_2_N1);
       Logic_T11( LED_3_N1);
-      Logic_T12( LED_4_N1);
-      Logic_T12( LED_5_N1);
-
-      // Usa PinX per alimentare e accendere i LED
-      DigOut(8,  Souliss_T1n_Coil, LED_O_N1);
+      DigOut(8,  Souliss_T1n_Coil, LED_O_N1);     // Usa PinX per alimentare e accendere i LED
       DigOut(9,  Souliss_T1n_Coil, LED_1_N1);
       DigOut(10, Souliss_T1n_Coil, LED_2_N1);
       DigOut(11, Souliss_T1n_Coil, LED_3_N1);
-      DigOut(12, Souliss_T1n_Coil, LED_4_N1);
-      DigOut(13, Souliss_T1n_Coil, LED_5_N1);
+     
     }
+    
+    FAST_510ms() {      
+        LowDigIn(7, Souliss_T4n_Alarm, ALLARME);       // Pin7 ingresso sensore allarme pull-up
+        Logic_T41(ALLARME);                            //esegui logica allarme
+        nDigOut(12, Souliss_T4n_Antitheft, ALLARME);    // Pin12 se allarme attivo              
+        LowDigOut(13, Souliss_T4n_InAlarm, ALLARME);    // Pin13 se allarme spento
+    }
+    
+    FAST_2110ms()   {    // watchdog di controllo presenza dei nodi    
+            mInput(ALLARME) = Watchdog(Nodo04_address_peer01_Gw_01, WATCHDOG, Souliss_T4n_Alarm);
+        }
+    
     FAST_GatewayComms();   //Qui elaboriamo tutte le comunicazioni con altri nodi la Souliss App
 
 
@@ -132,8 +127,6 @@ void loop()
       Timer_T11( LED_1_N1);
       Timer_T11( LED_2_N1);
       Timer_T11( LED_3_N1);
-      Timer_T12( LED_4_N1);
-      Timer_T12( LED_5_N1);
     }
   }
 }

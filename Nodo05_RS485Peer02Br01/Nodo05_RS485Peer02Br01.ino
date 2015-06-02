@@ -93,6 +93,7 @@ void loop()
       Logic_T11(LIGHT3_N5);
       Logic_T11(LIGHT4_N5);
       Logic_T11(LIGHT5_N5);
+      
       DigOut(6, Souliss_T1n_Coil, LIGHT1_N5);      
       DigOut(7, Souliss_T1n_Coil, LIGHT2_N5);      	
       DigOut(8, Souliss_T1n_Coil, LIGHT3_N5);
