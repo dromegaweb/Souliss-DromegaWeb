@@ -8,13 +8,10 @@
 
 /**************************************************************************
 *
-* Progetto   :    Nodo02 Eth - Bridge01 RS485 - Arduino uno + Ethernet W5100
+* Progetto   :    Nodo02 Eth - Bridge01 RS485 - Arduino uno + ENC28J60
 * Autore     :    DromegaWeb
-* Data       :    Febbraio 2015     - Inizio  - esito OK
-*                 21 Marzo 2015     - introdotto SpeakEasy - esito OK
-*                 25 Marzo 2015     - aggiunto gateway RS485 - esito OK
-*                 29 Marzo 2015    -  Aggiunto gestione Usart InSketch - esito OK
-*                 02 maggio 2015   -  Aggiornato ad arduino 1.6.3
+* Data       :    18 Giugno 2015 prima bozza
+* 
 *
 ****************************************************************************/
 
@@ -28,7 +25,7 @@
 
 // Configure the framework
 #include "bconf/StandardArduino.h"    // Uso un Arduino standard
-#include "conf/ethW5100.h"            // Uso connessione Ethernet Wiznet W5100
+#include "conf/ethENC28J60.h"         // Uso connessione Ethernet ENC28J60
 #include "conf/usart.h"	              // uso la seriale
 #include "conf/SuperNode.h"           // The main node is the SuperNode
 
@@ -64,8 +61,12 @@ uint8_t ip_gateway_Router[4] = {192, 168, 2, 10};    // indirizzo Gateway router
 
 // -------------FINE definizione della configurazione di rete --DromegaWeb------------------------------------
 
-// Indirizzo MAC per Scheda Ethernet Nodo02
-#define  MAC_INSKETCH const uint8_t MAC_ADDRESS[] = {  0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0xBB};
+// Indirizzo MAC per Scheda Ethernet Nodo03
+#define MAC_INSKETCH
+uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0xBC};
+#define AUTO_MAC         0
+#define MAC_DEBUG        0
+
 
 
 #define LIGHT1_N2            0
