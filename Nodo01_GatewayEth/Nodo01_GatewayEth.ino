@@ -7,6 +7,12 @@
 *                 02 maggio 2015   -  Aggiornato ad arduino 1.6.3
 *
 ****************************************************************************/
+// Indirizzo MAC per Scheda Ethernet Nodo01
+#define MAC_INSKETCH
+uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0xBA};
+#define AUTO_MAC         0
+#define MAC_DEBUG        0
+
 
 // Configure the framework
 #include "bconf/StandardArduino.h"    // Uso un Arduino standard
@@ -43,12 +49,6 @@ uint8_t ip_gateway_Router[4] = {192, 168, 2, 10};    // indirizzo Gateway router
 
 // -------------FINE definizione della configurazione di rete --DromegaWeb------------------------------------
 
-// Indirizzo MAC per Scheda Ethernet Nodo01
-#define MAC_INSKETCH
-uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0xBA};
-#define AUTO_MAC         0
-#define MAC_DEBUG        0
-
 
 #define LED_O_N1			0	// This is the memory slot for the logic that handle the light
 #define LED_1_N1			1
@@ -63,9 +63,13 @@ void setup()
   Initialize();
   Souliss_SetIPAddress(ip_address_Gw, subnet_mask, ip_gateway_Router);    // Questo nodo sarà --> 192.168.2.11
   SetAsGateway(myvNet_address);                                           // Questo nodo è Gateway Souliss app
+  
   SetAsPeerNode(E2_address, 1);                       // definisco Nodo02 Eth + brige01 RS485
-  SetAsPeerNode(Nodo04_address_peer01_Gw_01, 2);      // definisco Nodo04 peer01 su bridge01
-  SetAsPeerNode(Nodo05_address_peer02_Gw_01, 3);      // definisco Nodo05 peer02 su bridge01
+  SetAsPeerNode(E3_address, 2);                       // definisco Nodo03 Eth + brige02 RS485
+
+  SetAsPeerNode(Nodo04_address_peer01_Gw_01, 3);      // definisco Nodo04 peer01 su bridge01
+  SetAsPeerNode(Nodo05_address_peer02_Gw_01, 4);      // definisco Nodo05 peer02 su bridge01
+  SetAsPeerNode(Nodo06_address_peer01_Gw_02, 5);      // definisco Nodo06 peer01 su bridge02
 
 
   // Set tipici e I/O LED

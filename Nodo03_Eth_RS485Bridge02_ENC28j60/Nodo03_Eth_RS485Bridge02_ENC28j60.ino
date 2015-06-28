@@ -1,19 +1,15 @@
-/**************************************************************************
-*
-* Progetto   :    Nodo03 Eth - Bridge02 RS485 - Arduino uno + Ethernet W5100
-* Autore     :    DromegaWeb
-* Data       :    IN CODA DI SVILUPPO
-*
-****************************************************************************/
 
 /**************************************************************************
 *
-* Progetto   :    Nodo02 Eth - Bridge01 RS485 - Arduino uno + ENC28J60
+* Progetto   :    Nodo03 - Arduino Pro Mini + Eth ENC28j60
 * Autore     :    DromegaWeb
-* Data       :    18 Giugno 2015 prima bozza
-* 
+* Scopo      :    Questo nodo è un Bridge ethrnet con RS485 verso i peer
+* Data       :    21 Giugno 2015   -  Prima bozza
+*                 
+*                 
 *
 ****************************************************************************/
+
 
 #define USARTDRIVER_INSKETCH
 #define	USARTDRIVER		Serial	//Dico al driver vNet di usare la seriale 0 dell'UNO
@@ -21,6 +17,11 @@
 #define USART_TXENPIN		3
 #define USART_DEBUG  		0
 
+// Indirizzo MAC per Scheda Ethernet Nodo03
+#define MAC_INSKETCH
+uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0xBD};
+#define AUTO_MAC         0
+#define MAC_DEBUG        0
 
 
 // Configure the framework
@@ -61,20 +62,11 @@ uint8_t ip_gateway_Router[4] = {192, 168, 2, 10};    // indirizzo Gateway router
 
 // -------------FINE definizione della configurazione di rete --DromegaWeb------------------------------------
 
-// Indirizzo MAC per Scheda Ethernet Nodo03
-#define MAC_INSKETCH
-uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0xBC};
-#define AUTO_MAC         0
-#define MAC_DEBUG        0
 
 
 
-#define LIGHT1_N2            0
-#define LIGHT2_N2	     1
-#define LIGHT3_N2            2
-#define LIGHT4_N2	     3
-#define LIGHT5_N2            4
-#define LIGHT6_N2	     5
+
+#define LIGHT1_N3			0
 
 
 void setup()
@@ -82,26 +74,15 @@ void setup()
   Souliss_SetIPAddress(ip_address_E3, subnet_mask, ip_gateway_Router);                   // set IP a 13
   Souliss_SetAddress(Nodo03_address_Gateway_RS485_02, myvNet_subnet, myvNet_supern);    //definisce l'indirizzo del gateway RS485
 
-  Set_T11(LIGHT1_N2);
-  Set_T11(LIGHT2_N2);
-  Set_T12(LIGHT3_N2);
-  Set_T12(LIGHT4_N2);
-  Set_T11(LIGHT5_N2);
-  Set_T11(LIGHT6_N2);
+  Set_T11(LIGHT1_N3);
+
 
   // Define inputs, outputs pins - Hardware pulldown required
-  //pinMode(3, INPUT);
+  //pinMode(3, INPUT);   //Riservato a seriale RS 485 pin Enable
   pinMode(4, INPUT);
-  pinMode(5, INPUT);
-  pinMode(6, INPUT);
-  pinMode(7, INPUT);
-
-  pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
-  pinMode(10, OUTPUT);
-  pinMode(11, OUTPUT);
-  pinMode(12, OUTPUT);
-  pinMode(13, OUTPUT);
+  
+  pinMode(5, OUTPUT);
+  
 }
 
 
@@ -112,26 +93,12 @@ void loop()
 
     FAST_30ms()  {
 
-      // DigIn(2, Souliss_T1n_ToggleCmd, LIGHT1_N2);	// riservato enable RS485
-      // DigIn(3, Souliss_T1n_ToggleCmd, LIGHT2_N2);
-      DigIn(4, Souliss_T1n_ToggleCmd, LIGHT3_N2);
-      DigIn(5, Souliss_T1n_ToggleCmd, LIGHT4_N2);
-      DigIn(6, Souliss_T1n_ToggleCmd, LIGHT5_N2);
-      DigIn(7, Souliss_T1n_ToggleCmd, LIGHT6_N2);
-
-      Logic_T11(LIGHT1_N2);
-      Logic_T11(LIGHT2_N2);
-      Logic_T12(LIGHT3_N2);
-      Logic_T12(LIGHT4_N2);
-      Logic_T11(LIGHT5_N2);
-      Logic_T11(LIGHT6_N2);
-
-      DigOut(8, Souliss_T1n_Coil, LIGHT1_N2);
-      DigOut(9, Souliss_T1n_Coil, LIGHT2_N2);
-      DigOut(10, Souliss_T1n_Coil, LIGHT3_N2);
-      DigOut(11, Souliss_T1n_Coil, LIGHT4_N2);
-      DigOut(12, Souliss_T1n_Coil, LIGHT5_N2);
-      DigOut(13, Souliss_T1n_Coil, LIGHT6_N2);
+      DigIn(4, Souliss_T1n_ToggleCmd, LIGHT1_N3);
+     
+      Logic_T11(LIGHT1_N3);
+     
+      DigOut(5, Souliss_T1n_Coil, LIGHT1_N3);
+      
     }
     
     FAST_PeerComms();
@@ -141,8 +108,8 @@ void loop()
   EXECUTESLOW() {
     UPDATESLOW();
     SLOW_10s() {
-      Timer_T12(LIGHT3_N2);
-      Timer_T12(LIGHT4_N2);
+      Timer_T11(LIGHT1_N3);
+      
     }
     SLOW_PeerJoin();        // riconnette se il Gateway viene riavviato
   }

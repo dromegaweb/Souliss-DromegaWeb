@@ -16,7 +16,11 @@
 #define USART_TXENPIN		3
 #define USART_DEBUG  		0
 
-
+// Indirizzo MAC per Scheda Ethernet Nodo02
+#define MAC_INSKETCH
+uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0xBB};
+#define AUTO_MAC         0
+#define MAC_DEBUG        0
 
 // Configure the framework
 #include "bconf/StandardArduino.h"    // Uso un Arduino standard
@@ -56,19 +60,13 @@ uint8_t ip_gateway_Router[4] = {192, 168, 2, 10};    // indirizzo Gateway router
 
 // -------------FINE definizione della configurazione di rete --DromegaWeb------------------------------------
 
-// Indirizzo MAC per Scheda Ethernet Nodo02
-#define MAC_INSKETCH
-uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0xBB};
-#define AUTO_MAC         0
-#define MAC_DEBUG        0
 
-
-#define LIGHT1_N2     0
-#define LIGHT2_N2	    1
-#define LIGHT3_N2     2
-#define LIGHT4_N2	    3
-#define LIGHT5_N2     4
-#define LIGHT6_N2	    5
+#define LIGHT1_N2      0
+#define LIGHT2_N2      1
+#define LIGHT3_N2      2
+#define LIGHT4_N2      3
+#define LIGHT5_N2      4
+#define LIGHT6_N2      5
 
 
 void setup()
@@ -84,7 +82,7 @@ void setup()
   Set_T11(LIGHT6_N2);
 
   // Define inputs, outputs pins - Hardware pulldown required
-  //pinMode(3, INPUT);      // riservato RS485
+  //pinMode(3, INPUT);      //Riservato a seriale RS 485 pin Enable
   pinMode(4, INPUT);
   pinMode(5, INPUT);
   pinMode(6, INPUT);
@@ -106,8 +104,6 @@ void loop()
 
     FAST_30ms()  {
 
-      // DigIn(2, Souliss_T1n_ToggleCmd, LIGHT1_N2);	// riservato RS485
-      // DigIn(3, Souliss_T1n_ToggleCmd, LIGHT2_N2);  // riservato RS485
       DigIn(4, Souliss_T1n_ToggleCmd, LIGHT3_N2);
       DigIn(5, Souliss_T1n_ToggleCmd, LIGHT4_N2);
       DigIn(6, Souliss_T1n_ToggleCmd, LIGHT5_N2);
