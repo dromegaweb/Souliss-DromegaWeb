@@ -31,10 +31,10 @@
 uint8_t ip_address[4]  = {192, 168, 2, 10};
 uint8_t subnet_mask[4] = {255, 255, 255, 0};
 uint8_t ip_gateway[4]  = {192, 168, 2, 1};
-#define Gateway_address 10
+#define ip_Gateway 10
 #define myvNet_address  ip_address[3]  
 #define myvNet_subnet   0xFF00
-#define myvNet_supern   Gateway_address
+#define myvNet_supern   ip_Gateway
 
 // **** Definiti i pin del modulo ESP **** 
 #define INPUTPIN   0
