@@ -3,7 +3,7 @@
  * Progetto   :    Nodo06 Peer01 RS485 su Bridge02 (Nodo03) - Arduino Pro Mini
  * Autore     :    DromegaWeb
  * Data       :    27 Giugno 2015    -  Prima bozza 
- * 
+ *                 05 Luglio 2015    -  Aggiunto RGB esito OK ma non su android 2.2
  * 
  ***************************************************************************/
   
@@ -52,8 +52,11 @@ uint8_t ip_gateway_Router[4] = {192, 168, 2, ip_Router};	// indirizzo Gateway ro
 
 // -------------FINE definizione della configurazione di rete --DromegaWeb------------------------------------
 
-#define LIGHT1_N6        0
-#define LIGHT2_N6	 1
+#define LEDCONTROL          0               // This is the memory slot for the logic that handle the light
+#define LEDRED              1               // This is the memory slot for the logic that handle the light
+#define LEDGREEN            2               // This is the memory slot for the logic that handle the light
+#define LEDBLUE             3               // This is the memory slot for the logic that handle the light
+
 
 
 void setup()
@@ -61,18 +64,14 @@ void setup()
   Initialize();
   Souliss_SetAddress(Nodo06_Bridge02_Peer01, myvNet_subnet, Nodo03_Bridge02_RS485);
 
-  Set_T11(LIGHT1_N6);
-  Set_T11(LIGHT2_N6);
+  Set_LED_Strip(LEDCONTROL);                  // Set a logic to control a LED strip
 
 
-         //  pinMode(7,INPUT);
-         //  pinMode(8,INPUT);
-
-  pinMode(6, OUTPUT);
-  pinMode(7, OUTPUT);					
-  pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);					
-  pinMode(10,OUTPUT);
+     // Define inputs, outputs pins
+    pinMode(7, INPUT);                  // Hardware pulldown required
+    pinMode(4, OUTPUT);                 // Power the LED
+    pinMode(5, OUTPUT);                 // Power the LED
+    pinMode(6, OUTPUT);                 // Power the LED  
   
 }
 
@@ -80,18 +79,20 @@ void loop()
 {
   EXECUTEFAST() {						
     UPDATEFAST();
-    FAST_50ms() {
-                             //   DigIn(7,Souliss_T1n_ToggleCmd,LIGHT1_N6);	
-                             //   DigIn(8,Souliss_T1n_ToggleCmd,LIGHT2_N6);	
-      Logic_T11(LIGHT1_N6);
-      Logic_T11(LIGHT2_N6);
-    
-      DigOut(6, Souliss_T1n_Coil, LIGHT1_N6);      
-      DigOut(7, Souliss_T1n_Coil, LIGHT2_N6);      	
+    FAST_10ms() {
+      
+            DigIn(7, Souliss_T1n_ToggleCmd, LEDCONTROL);        
+            
+            // Execute the logic that handle the LED
+            Logic_LED_Strip(LEDCONTROL);
+
+            // Use the output values to control the PWM
+            analogWrite(4, mOutput(LEDRED));
+            analogWrite(5, mOutput(LEDGREEN));
+            analogWrite(6, mOutput(LEDBLUE));   
+            ProcessCommunication();   	
    
     }
-
-    FAST_PeerComms()
 
     START_PeerJoin();
 
@@ -101,8 +102,9 @@ void loop()
     UPDATESLOW();
 
     SLOW_10s() {		// Gestiamo il timer con un tempo base di 10 secondi
-        Timer_T11(LIGHT1_N6);
-        Timer_T11(LIGHT2_N6);
+        
+            // The timer handle timed-on states
+            Timer_LED_Strip(LEDCONTROL); 
     }
     SLOW_PeerJoin();        // riconnette se il Gateway viene riavviato
   }
