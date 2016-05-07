@@ -12,9 +12,9 @@
   
   #define USARTDRIVER_INSKETCH
   #define USARTDRIVER	        Serial	//Dico al driver vNet di usare la seriale 0 dell'Arduino UNO
-  #define USART_TXENABLE        1
-  #define USART_TXENPIN		3
-  #define USART_DEBUG  		0
+  #define USART_TXENABLE      1
+  #define USART_TXENPIN		    3
+  #define USART_DEBUG  		    0
   
   
   // Configure the framework
@@ -28,7 +28,7 @@
 // -------------INIZIO definizione della configurazione di rete --DromegaWeb------------------------------------
 
 #define ip_Router		10
-#define	ip_Gateway		11			// indirizzo ip Gateway Souliss   
+#define	ip_Gateway	11			// indirizzo ip Gateway Souliss   
 #define ip_Eth_N2		12			// indirizzo ip su Ethernet Nodo02
 #define	ip_Eth_N3		13			// indirizzo ip su Ethernet Nodo03
 
@@ -39,8 +39,8 @@ uint8_t subnet_mask[4]    = {255, 255, 255, 0};
 uint8_t ip_gateway_Router[4] = {192, 168, 2, ip_Router};	// indirizzo Gateway router
 
 #define myvNet_address		ip_address_Gw[3]		// ultimo byte dell' IP address (11) è anche l'indirizzo vNet
-#define	myvNet_subnet		0xFF00
-#define myvNet_supern		0x0000
+#define	myvNet_subnet		  0xFF00
+#define myvNet_supern		  0x0000
 #define	myvNet_supern_E2	Nodo02_Bridge01_RS485
 #define	myvNet_supern_E3	Nodo03_Bridge02_RS485
 
@@ -55,11 +55,13 @@ uint8_t ip_gateway_Router[4] = {192, 168, 2, ip_Router};	// indirizzo Gateway ro
 
 // -------------FINE definizione della configurazione di rete --DromegaWeb------------------------------------
 
-#define LIGHT1_N5            0
+#define LIGHT1_N5      0
 #define LIGHT2_N5	     1
 #define LIGHT3_N5	     2
 #define LIGHT4_N5	     3
-#define LIGHT5_N5	     3
+#define LIGHT5_N5	     4
+#define ALLARME        5
+#define WATCHDOG       6
 
 void setup()
 {
@@ -80,6 +82,10 @@ void setup()
   pinMode(8, OUTPUT);
   pinMode(9, OUTPUT);					
   pinMode(10,OUTPUT);
+
+   // Set tipici e I/O ALLARME  
+  Set_T42(ALLARME);      // setta l'allarme
+  pinMode(11, INPUT);    // ingressso pull-down per sensore d'allarme PIR
   
 }
 
@@ -102,6 +108,15 @@ void loop()
       DigOut(9, Souliss_T1n_Coil, LIGHT4_N5);      	
       DigOut(10, Souliss_T1n_Coil, LIGHT5_N5);
     }
+
+    FAST_510ms() {
+      DigIn(11, Souliss_T4n_Alarm, ALLARME);   // ingressso pull-down per sensore d'allarme
+      Logic_T42(ALLARME, ip_Gateway);  //esegue locica allarme
+        }
+        
+    FAST_2110ms()   {   // watchdog di controllo presenza dei nodi             
+      mInput(ALLARME) = Watchdog(ip_Gateway, WATCHDOG, Souliss_T4n_Alarm);
+        }
 
     FAST_PeerComms()
 

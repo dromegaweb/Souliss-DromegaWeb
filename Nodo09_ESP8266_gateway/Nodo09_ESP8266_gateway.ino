@@ -13,10 +13,12 @@
 #include "conf/Gateway.h"                  
 #include "conf/IPBroadcast.h"
 
-// **** Define the WiFi name and password ****
+#include "G:\dromegawebwifi.h"         // **** Define the private WiFi name and password in external file ****   
+/*
 #define WIFICONF_INSKETCH
-#define WiFi_SSID               "DrHouse"
-#define WiFi_Password           "bf14473bf"   
+#define WiFi_SSID               "********"
+#define WiFi_Password           "********"  
+*/  
 
 // Include framework code and libraries
 #include <ESP8266WiFi.h>

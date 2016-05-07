@@ -17,8 +17,8 @@
 #define USART_DEBUG  		0
 
 // Indirizzo MAC per Scheda Ethernet Nodo02
-#define MAC_INSKETCH
-uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0xBB};
+#define MAC_INSKETCH                                              // "0xBF" identifica la mia rete BF 
+uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0x02};     // l'ultimo indirizzo "0x02" identifica il Nodo02
 #define AUTO_MAC         0
 #define MAC_DEBUG        0
 
@@ -36,7 +36,7 @@ uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0xBB};
 // -------------INIZIO definizione della configurazione di rete --DromegaWeb------------------------------------
 
 #define ip_Router		10
-#define	ip_Gateway		11			// indirizzo ip Gateway Souliss   
+#define	ip_Gateway	11			// indirizzo ip Gateway Souliss   
 #define ip_Eth_N2		12			// indirizzo ip su Ethernet Nodo02
 #define	ip_Eth_N3		13			// indirizzo ip su Ethernet Nodo03
 
@@ -74,7 +74,8 @@ uint8_t ip_gateway_Router[4] = {192, 168, 2, ip_Router};	// indirizzo Gateway ro
 
 void setup()
 {
-  Souliss_SetIPAddress(ip_address_E2, subnet_mask, ip_gateway_Router);                   // set IP a 12
+  Initialize();
+  Souliss_SetIPAddress(ip_address_E2, subnet_mask, ip_gateway_Router);        // set IP a 12
   Souliss_SetAddress(Nodo02_Bridge01_RS485, myvNet_subnet, myvNet_supern);    //definisce l'indirizzo del gateway RS485
 
   Set_T11(LIGHT1_N2);
