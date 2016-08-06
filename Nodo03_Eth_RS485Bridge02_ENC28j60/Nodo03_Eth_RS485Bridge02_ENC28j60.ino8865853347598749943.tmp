@@ -15,11 +15,11 @@
 **
 ****************************************************************************/
 
-#define USARTDRIVER_INSKETCH  // La RS485 utilizza i pin 0,1,3
-#define	USARTDRIVER		Serial	// Dico al driver vNet di usare la seriale 0 dell'UNO
-#define USART_TXENABLE  1
-#define USART_TXENPIN   3     // Pin 3 riservato ad enable seriale RS485 con 0 e 1 per RX e TX
-#define USART_DEBUG     0
+#define USARTDRIVER_INSKETCH      // La RS485 utilizza i pin 0,1,3
+#define	USARTDRIVER		Serial	//Dico al driver vNet di usare la seriale 0 dell'UNO
+#define USART_TXENABLE		1
+#define USART_TXENPIN		3       // Pin 3 riservato ad enable seriale RS485 con 0 e 1 per RX e TX
+#define USART_DEBUG  		0
 
 // Indirizzo MAC per Scheda Ethernet Nodo03
 #define MAC_INSKETCH                                           // "0xBF" identifica la mia rete BF 
@@ -36,10 +36,7 @@ uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0x03};  // l'ultimo indir
 
 
 #include <SPI.h>
-#include <DHT.h>
 #include "Souliss.h"
-
-
 
 // -------------INIZIO definizione della configurazione di rete --DromegaWeb------------------------------------
 
@@ -78,21 +75,11 @@ uint8_t ip_gateway_Router[4] = {192, 168, 2, ip_Router};	// indirizzo Gateway ro
 #define VENTOLA_TEMP    4
 #define VENTOLA_UMID    5
 
-#define DHTPIN A0 // Per carenza di ingressi uso un pin analogico da connettere al sensore DHT11
-#define DHTTYPE DHT11   // DHT 11      tipo di DHT usato
-//#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
-#define TEMPERATURE     6
-#define HUMIDITY        8
-DHT dht(DHTPIN, DHTTYPE, 15);
-
-
 void setup()
 {
   Initialize();
   Souliss_SetIPAddress(ip_address_E3, subnet_mask, ip_gateway_Router);                   // set IP a 13
   Souliss_SetAddress(Nodo03_Bridge02_RS485, myvNet_subnet, myvNet_supern);    //definisce l'indirizzo del gateway RS485
-
-  dht.begin();
 
   Set_AutoLight(Luci_Cantina);
   Set_AutoLight(Luci_Vini);
@@ -100,8 +87,6 @@ void setup()
   Set_SimpleLight(VALVOLA_02);
   Set_SimpleLight(VENTOLA_TEMP);
   Set_SimpleLight(VENTOLA_UMID);
-  Set_Temperature(TEMPERATURE);
-  Set_Humidity(HUMIDITY);
 
   // Define inputs, outputs pins - Hardware pulldown required
   //pinMode(3, INPUT);   //Riservato a seriale RS 485 pin Enable
@@ -109,16 +94,14 @@ void setup()
   pinMode(4, INPUT);    //PIR Luci Cantina
   pinMode(5, INPUT);    //PIR Luci Vini
       
-//  pinMode(2, INPUT);    // ingresso DHT 11 , sensore temp_umid
-  pinMode(A0, INPUT);    // ingresso DHT 11 , sensore temp_um
-  
+  pinMode(2, INPUT);    // ingresso DHT 11 , sensore temp_umid
+
   pinMode(8, OUTPUT);     //Luce Cantina
   pinMode(9, OUTPUT);     //Luce Vini
-  pinMode(6, OUTPUT);     //Valvola irrigazione 01
-  pinMode(7, OUTPUT);     //Valvola irrigazione 02
-//  pinMode(xx, OUTPUT);    //Ventola scambio termico
-//  pinMode(xx, OUTPUT);    //Ventola anti umidità
-
+  pinMode(6, OUTPUT);    //Valvola irrigazione 01
+  pinMode(7, OUTPUT);    //Valvola irrigazione 02
+  pinMode(xx, OUTPUT);    //Ventola scambio termico
+  pinMode(xx, OUTPUT);    //Ventola anti umidità
   
  
 }
@@ -138,13 +121,12 @@ void loop()
       Logic_AutoLight(Luci_Vini);
       
       DigOut(8, Souliss_T1n_Coil, Luci_Cantina);         //Luce Cantina
-      DigOut(9, Souliss_T1n_Coil, Luci_Vini);            //Luce Vini   
+      DigOut(9, Souliss_T1n_Coil, Luci_Vini);            //Luce Vini
+
+      
+      
+      
     }
-    
-    FAST_2110ms() {
-           Logic_Temperature(TEMPERATURE);
-           Logic_Humidity(HUMIDITY);
-        }
     
     FAST_PeerComms();
         
@@ -155,21 +137,11 @@ void loop()
     SLOW_10s() {
       //Timer_T11(Luci_Cantina);
       //Timer_T11(Luci_Vini); 
-       Souliss_ReadDHT(TEMPERATURE, HUMIDITY); 
     }
     SLOW_PeerJoin();        // riconnette se il Gateway viene riavviato
   }
 }
 
-void Souliss_ReadDHT(uint8_t TEMPERATURE_SLOT, uint8_t HUMIDITY_SLOT){
-    // Legge la temperatura e l'umidutà da DHT ogni 10 secondi  
-    float h = dht.readHumidity();     // Legge l'umidità
-    float t = dht.readTemperature();  // Legge la temperatura in gradi Celsius
-
-                
-    ImportAnalog(TEMPERATURE_SLOT, &t);
-    ImportAnalog(HUMIDITY_SLOT, &h); 
-}
 
 
 

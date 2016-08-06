@@ -22,7 +22,6 @@ uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0x01};     // l'ultimo in
 #include "conf/Gateway.h"             // uso il nodo come Gateway Souliss
 #include "conf/XMLinterface.h"        // Abilito l'interfaccia HTML/XML
 
-
 #include <SPI.h>
 #include "Souliss.h"
 
@@ -33,7 +32,7 @@ uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0x01};     // l'ultimo in
 #define ip_Eth_N2		  12			// indirizzo ip Ethernet Bridge01 Nodo02
 #define	ip_Eth_N3		  13			// indirizzo ip Ethernet Bridge02 Nodo03
 
-uint8_t ip_address_Gw[4]  = {192, 168, 2, ip_Gateway};		// indirizzo Gateway souliss su Ethernet Arduino Mega
+uint8_t ip_address_Gw[4]  = {192, 168, 2, ip_Gateway};	// indirizzo Gateway souliss su Ethernet Arduino Mega
 uint8_t ip_address_E2[4]  = {192, 168, 2, ip_Eth_N2};		// indirizzo su Ethernet Nodo02
 uint8_t ip_address_E3[4]  = {192, 168, 2, ip_Eth_N3};		// indirizzo su Ethernet Nodo03
 uint8_t subnet_mask[4]    = {255, 255, 255, 0};
@@ -56,16 +55,12 @@ uint8_t ip_gateway_Router[4] = {192, 168, 2, ip_Router};	// indirizzo Gateway ro
 
 // -------------FINE definizione della configurazione di rete --DromegaWeb------------------------------------
 
-
-
-
 #define LED_O_N1			0	// This is the memory slot for the logic that handle the light
 #define LED_1_N1			1
 #define LED_2_N1			2
 #define LED_3_N1			3
 #define ALLARME  			4
 #define WATCHDOG      5
-
 
 void setup()
 {
@@ -82,7 +77,7 @@ void setup()
   SetAsPeerNode(Nodo06_Bridge02_Peer01, 5);      // definisco Nodo06 peer01 su bridge02
 
 
-  //         Set tipici e I/O LED
+  //Set tipici e I/O LED
   
   Set_T11(LED_O_N1);
   Set_T11(LED_1_N1);
