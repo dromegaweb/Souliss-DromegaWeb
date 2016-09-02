@@ -17,10 +17,10 @@ uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0x01};     // l'ultimo in
 
 
 // Configure the framework
-#include "bconf/StandardArduino.h"    // Uso un Arduino standard
-#include "conf/ethW5100.h"            // Uso connessione Ethernet Wiznet W5100
-#include "conf/Gateway.h"             // uso il nodo come Gateway Souliss
-#include "conf/XMLinterface.h"        // Abilito l'interfaccia HTML/XML
+#include "bconf/StandardArduino.h"        // Uso un Arduino standard
+#include "conf/ethW5100.h"                // Uso connessione Ethernet Wiznet W5100
+#include "conf/Gateway_wPersistence.h"    // uso il nodo come Gateway Souliss con persistenza
+#include "conf/XMLinterface.h"            // Abilito l'interfaccia HTML/XML
 
 #include <SPI.h>
 #include "Souliss.h"
@@ -38,7 +38,7 @@ void setup()
 {
   Initialize();
   
-  Souliss_SetIPAddress(ip_address_Gw, subnet_mask, ip_gateway_Router);    // Questo nodo sarà --> 192.168.2.11
+  Souliss_SetIPAddress(ip_address_Gw, subnet_mask, ip_gateway_Router);    // Questo nodo sarà --> 192.168.2.10
   SetAsGateway(myvNet_address);                                           // Questo nodo è Gateway Souliss app
   
   SetAsPeerNode(ip_Eth_N2, 1);                   // definisco Nodo02 Eth + brige01 RS485
