@@ -1,0 +1,6 @@
+Il file richiamato nella compilazione si trova in questo percorso:
+
+C:\Users\DROMEGA2\Documents\Arduino\libraries\DromegaWebConf
+
+il file "DromegaWebConf.h" in questa cartella è solo una copia o collegamento
+il file "DromegaWebWifi.h" in questa cartella è solo una copia o collegamento

@@ -7,18 +7,20 @@
     Run this code on ESP8266 as WiFi SoC.
         
 ***************************************************************************/
+// Let the IDE point to the Souliss framework
+#include "SoulissFramework.h"
 
 // Configure the framework
 #include "bconf/MCU_ESP8266.h"          
 #include "conf/Gateway.h"                  
 #include "conf/IPBroadcast.h"
-
-#include "G:\dromegawebwifi.h"         // **** Define the private WiFi name and password in external file ****   
 /*
-#define WIFICONF_INSKETCH
-#define WiFi_SSID               "********"
-#define WiFi_Password           "********"  
+#include "G:\dromegawebwifi.h"         // **** Define the private WiFi name and password in external file ****   
 */  
+#define WIFICONF_INSKETCH
+#define WiFi_SSID               "8765432"
+#define WiFi_Password           "0987654"  
+
 
 // Include framework code and libraries
 #include <ESP8266WiFi.h>

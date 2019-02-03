@@ -16,7 +16,7 @@
 #include "conf/IPBroadcast.h"
 
 
-#include "G:\dromegawebwifi.h"         // **** Define the private WiFi name and password in external file ****   
+#include "C:\Users\DROMEGA2\Documents\Arduino\libraries\DromegaWebConf\DromegaWebWifi.h"         // **** Define the private WiFi name and password in external file ****   
 /*
 #define WIFICONF_INSKETCH
 #define WiFi_SSID               "********"

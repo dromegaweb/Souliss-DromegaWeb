@@ -1,55 +1,53 @@
 /**************************************************************************
-    Souliss - Hello World
-    
-    This is the basic example, control one LED via a push-button or Android
-    using SoulissApp (get it from Play Store).  
-    
-    Run this code on ESP8266 as WiFi SoC.
-        
+* Utilizzo   :    Nodo 
+* Progetto   :    Nodo04 - Esp01
+* Autore     :    DromegaWeb
+* Scopo      :    Questo nodo è un sensore PIR
+* 
+* Data       :    22 Aprile 2017   -  Approntamento come PIR
+*
+* NOTE : Pin riservati 
+*               Ingresso PIR     ->  0
+*      
 ***************************************************************************/
+// Let the IDE point to the Souliss framework
+#include "SoulissFramework.h"
+
+
+// Indirizzo MAC per Scheda Ethernet Nodo03
+#define MAC_INSKETCH                                           // "0xBF" identifica la mia rete BF 
+uint8_t MAC_ADDRESS[] = {0xBF, 0xBF, 0xBF, 0xBF, 0xBF, 0x04};  // l'ultimo indirizzo "0x04" identifica il Nodo04
+#define AUTO_MAC         0
+#define MAC_DEBUG        0
+
 
 // Configure the framework
 #include "bconf/MCU_ESP8266.h"          
-#include "conf/Gateway.h"                  
+#include "conf/Gateway.h"
 #include "conf/IPBroadcast.h"
-
-#include "G:\dromegawebwifi.h"         // **** Define the private WiFi name and password in external file ****   
-/*
-#define WIFICONF_INSKETCH
-#define WiFi_SSID               "********"
-#define WiFi_Password           "********"  
-*/
 
 // Include framework code and libraries
 #include <ESP8266WiFi.h>
 #include <EEPROM.h>
+
 #include "Souliss.h"
+#include "DromegaWebConf.h"
 
-// This identify the number of the LED logic
-#define ALLARME          0               
+//#include "C:\Users\DROMEGA2\Google Drive\Arduino\Progetti\Souliss-DromegaWeb\DromegaWebConf\DromegaWebConf.h"         // **** Define Network and private WiFi, name and password in external file ****   
 
-// Define the network configuration according 
-// to your router settings
-uint8_t ip_address[4]  = {192, 168, 2, 10};
-uint8_t subnet_mask[4] = {255, 255, 255, 0};
-uint8_t ip_gateway[4]  = {192, 168, 2, 1};
-#define ip_Gateway 10
-#define myvNet_address  ip_address[3]  
-#define myvNet_subnet   0xFF00
-#define myvNet_supern   ip_Gateway
+// This identify the number of the I/O logic
+#define ALLARME    0               
 
 // **** Definiti i pin del modulo ESP **** 
 #define INPUTPIN   0
 
+
 void setup()
 {   
     Initialize();
-
-     // Set network parameters
-    Souliss_SetIPAddress(ip_address, subnet_mask, ip_gateway);
-    SetAsGateway(myvNet_address);  
-    
-    // Definisce logica ALLARME 
+    Souliss_SetIPAddress(ip_address_Esp01, subnet_mask, ip_gateway_Router);
+    SetAsGateway(myvNet_address);   
+   
     Set_T41(ALLARME);        
     
     pinMode(INPUTPIN, INPUT);  // ingersso allarme
@@ -61,10 +59,12 @@ void loop()
     EXECUTEFAST() {                     
         UPDATEFAST();   
         FAST_510ms() {   
-              DigIn(INPUTPIN, Souliss_T4n_Alarm, ALLARME);    // Drive the LED as per command
-              Logic_T41(ALLARME);                                // Execute the anti-theft logic        
+              DigIn(INPUTPIN, Souliss_T4n_Alarm, ALLARME);    
+              Logic_T41(ALLARME);                                      
         } 
-        FAST_GatewayComms();                                        
+
+        FAST_GatewayComms();  // Usato solo quando questo nodo è anche Gateway                                      
+        //FAST_PeerComms();                                        
         
     }
 } 
