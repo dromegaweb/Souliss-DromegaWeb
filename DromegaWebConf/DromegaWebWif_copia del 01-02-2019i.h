@@ -14,7 +14,7 @@
 //---  Accesso WIFI -----
 #define WIFICONF_INSKETCH
 #define WiFi_SSID               "DrHouse"
-#define WiFi_Password           "bf14473bf"
+#define WiFi_Password           "XXXXXXXXXX"
 
 
 
