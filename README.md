@@ -5,7 +5,7 @@
 Data Aggiornamento
 07-02-2019
 
-#### Nodo01 - Gateway - Funzionante con:
+#### Nodo01 - Gateway - [Funzionante](https://github.com/dromegaweb/Souliss-DromegaWeb/blob/master/Nodo01_GatewayEth/Nodo01_GatewayEth.ino) con:
 - Nodo03
 - Nodo07 
 
