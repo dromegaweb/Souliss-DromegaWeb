@@ -1,11 +1,14 @@
 # Souliss-DromegaWeb
-Casa Domotica con sistema Souliss.
+
+## Casa Domotica con sistema Souliss.
 
 Data Aggiornamento
 07-02-2019
-Gateway - Nodo01 - Funzionante con:
-                          -Nodo03
-                          -Nodo07
+
+##### Nodo01 - Gateway - Funzionante con:
+- Nodo03
+- Nodo07 
+Hardaware -> Arduino Mega 2560 + Ethernet W5100
 	
 Nodo03 - Funzionante 
        - Hardaware -> Arduino uno + Ethernet W5100 + RS485
