@@ -6,8 +6,9 @@ Data Aggiornamento
 07-02-2019
 
 #### [Nodo01](https://github.com/dromegaweb/Souliss-DromegaWeb/blob/master/Nodo01_GatewayEth/Nodo01_GatewayEth.ino) - Gateway - Funzionante con:
-- Nodo03
-- Nodo07 
+
+Nodo03
+Nodo07
 
 	Hardaware -> Arduino Mega 2560 + Ethernet W5100
 	Software -> Collegato via Ethernet alla rete funziona come Gateway
