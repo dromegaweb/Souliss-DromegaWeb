@@ -10,12 +10,15 @@ Data Aggiornamento
 - Nodo07 
 
 		Hardaware -> Arduino Mega 2560 + Ethernet W5100
+		Software -> Collegato via Ethernet alla rete funziona come Gateway
 	
-Nodo03 - Funzionante 
-       - Hardaware -> Arduino uno + Ethernet W5100 + RS485
-       - Software -> Collegato via Ethernet alla rete funziona da ponte (Bridge02) verso altri nodi con una linea RS485.
+#### Nodo03 - Funzionante 
+
+		Hardaware -> Arduino uno + Ethernet W5100 + RS485
+		Software -> Collegato via Ethernet alla rete funziona da ponte (Bridge02) verso altri nodi con una linea RS485.
        
-Nodo07 - Funzionante
-       - Hardaware -> Arduino Standalone Programmato con USBasp
-       - Software -> Peer01 RS485 su Bridge02(Nodo03) 
+#### Nodo07 - Funzionante
+
+		Hardaware -> Arduino Standalone Programmato con USBasp
+		Software -> Peer01 RS485 su Bridge02(Nodo03) 
 
