@@ -11,16 +11,11 @@
 *                 05 Nov 2017      -  Disabilitato tutto , Uso solo come Gateway per test h24
 *                                       e NODO_03
 *                 01 Feb 2019      -  Ristruttirazione sistema
+*                 09 Mar 2019      -  Aggiunto Nodo 13 
 *
 ****************************************************************************/
 // Let the IDE point to the Souliss framework
 #include "SoulissFramework.h"
-
-/* Indirizzo MAC per Scheda Ethernet Nodo01 Gateway
-#define MAC_INSKETCH                                              // "0xBF" identifica la mia rete BF 
-uint8_t MAC_ADDRESS[] = {0x1A, 0xA6, 0x49, 0x6B, 0xBF, 0x01};     // l'ultimo indirizzo "0x01" identifica il Nodo01
-#define AUTO_MAC         0
-#define MAC_DEBUG        0              */
 
 // Configure the framework
 #include "bconf/StandardArduino.h"          // Use a standard Arduino
