@@ -14,6 +14,10 @@
 *                 09 Mar 2019      -  Aggiunto Nodo 13 
 *
 ****************************************************************************/
+
+//#define DW_DEBUG            // Se attivo abilita il debug
+
+
 // Let the IDE point to the Souliss framework
 #include "SoulissFramework.h"
 
@@ -33,7 +37,7 @@ void setup()
   pinMode(WachDog_LED_pin,OUTPUT);
   digitalWrite(WachDog_LED_pin, value); // Accende il LED di WachDog nela fase di setup
   Initialize();
-  INIT_Nodo01();
+  INIT_Nodo01_TEST();
 }
 
 void loop()
@@ -48,7 +52,14 @@ void loop()
     
     FAST_GatewayComms();   //Elaborazione di tutte le comunicazioni con altri nodi la Souliss App
   }
-//  EXECUTESLOW() {    UPDATESLOW();    SLOW_10s() {	    }  }
+  EXECUTESLOW() {
+    UPDATESLOW();
+    SLOW_10s() {
+          #ifdef DW_DEBUG
+            Serial.print("IP Gateway:");
+          #endif  
+    }  
+  }
 }
 
 
