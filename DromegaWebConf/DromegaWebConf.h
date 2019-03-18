@@ -15,7 +15,7 @@
 // -------------INIZIO configurazione di rete DromegaWeb------------------------------------
 
 #define Add_Router			1     	// indirizzo ip Ethernet Router
-#define	Add_Gateway			60		// indirizzo ip Ethernet Gateway Arduino Mega  Nodo01  
+#define	Add_Gateway			51		// indirizzo ip Ethernet Gateway Arduino Mega  Nodo01  
 #define Add_Eth_N2			52		// indirizzo ip Ethernet Bridge01 Nodo02
 #define	Add_Eth_N3			53		// indirizzo ip Ethernet Bridge02 Nodo03
 #define	Add_Esp01_Nodo13	54		// indirizzo ip Ethernet Esp01 Nodo13 Allarme con 1 PIR
@@ -71,14 +71,12 @@ uint8_t subnet_mask[4]    = {255, 255, 255, 0};
 
 #define INIT_Nodo01_TEST()  SetIPAddress(ip_Gw, subnet_mask, ip_Router); \
 							SetAsGateway(myvNet_address); \
-							SetAddress(Nodo01_Gateway, myvNet_subnet, myvNet_supern); \
-							SetAsPeerNode(Nodo13_ESP01, 1);
+							SetAsPeerNode(Add_Esp01_Nodo13, 1);
 							
-#define INIT_Nodo13_TEST()  GetIPAddress(); \
+#define INIT_Nodo13_TEST_din()  GetIPAddress(); \
 							SetAddress(Nodo13_ESP01, myvNet_subnet, Nodo01_Gateway);
 							
-#define INIT_Nodo13_TEST1()  SetIPAddress(ip_Nodo13, subnet_mask, ip_Router); \
-							SetAddress(Nodo13_ESP01, myvNet_subnet, Nodo01_Gateway);
+#define INIT_Nodo13_TEST_stat()  SetIPAddress(ip_Nodo13, subnet_mask, ip_Router);
 							
 							
 							  
@@ -98,11 +96,11 @@ uint8_t subnet_mask[4]    = {255, 255, 255, 0};
   SetIPAddress(ip_Gw, subnet_mask, ip_Router);    // Questo nodo sarà --> 192.168.2.51
   SetAsGateway(myvNet_address);                                           // Questo nodo è Gateway Souliss app
   SetAsPeerNode(Add_Eth_N2, 1);                   // definisco Nodo02 Eth + brige01 RS485
-  SetAsPeerNode(Add_Eth_N3, 1);                   // definisco Nodo03 Eth + brige02 RS485
+  SetAsPeerNode(Add_Eth_N3, 2);                   // definisco Nodo03 Eth + brige02 RS485
   SetAsPeerNode(Nodo04_B01_P01, 3);      // definisco Nodo04 peer01 su bridge01
   SetAsPeerNode(Nodo05_B01_P02, 4);      // definisco Nodo05 peer02 su bridge01
   SetAsPeerNode(Nodo06_B02_P01, 5);      // definisco Nodo06 peer01 su bridge02
-  SetAsPeerNode(Nodo07_B02_P02, 2);      // definisco Nodo07 peer02 su bridge02
+  SetAsPeerNode(Nodo07_B02_P02, 6);      // definisco Nodo07 peer02 su bridge02
 
   
   SetAddress(0xAB01, 0xFF00, 0x0000); 
