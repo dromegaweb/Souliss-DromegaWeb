@@ -17,7 +17,7 @@
 
 // Include framework code and libraries
 #include "bconf/MCU_ESP8266.h"          
-#include "conf/IPBroadcast.h"
+//#include "conf/IPBroadcast.h"
 
 // **** Definisco il nome e la password della rete WiFi a cui mi connetto ****     
 #define WIFICONF_INSKETCH                //dichiarato in  #include "DromegaWebWifi.h"
@@ -40,7 +40,7 @@
 void setup()
 {   
     Initialize();
-    INIT_Nodo13_TEST1();   //Mappa rete nodo vedi DromegaWebConf.h 	  
+    INIT_Nodo13_TEST_stat();   //Mappa rete nodo vedi DromegaWebConf.h 	  
  	  Set_T41(ALLARME);
  	  pinMode(INPUTPIN, INPUT);  // ingersso allarme
     
