@@ -15,7 +15,7 @@
 // -------------INIZIO configurazione di rete DromegaWeb------------------------------------
 
 #define Add_Router			1     	// indirizzo ip Ethernet Router
-#define	Add_Gateway			51		// indirizzo ip Ethernet Gateway Arduino Mega  Nodo01  
+#define	Add_Gateway			60		// indirizzo ip Ethernet Gateway Arduino Mega  Nodo01  
 #define Add_Eth_N2			52		// indirizzo ip Ethernet Bridge01 Nodo02
 #define	Add_Eth_N3			53		// indirizzo ip Ethernet Bridge02 Nodo03
 #define	Add_Esp01_Nodo13	54		// indirizzo ip Ethernet Esp01 Nodo13 Allarme con 1 PIR
@@ -41,7 +41,7 @@ uint8_t subnet_mask[4]    = {255, 255, 255, 0};
 #define Nodo08_B02_P03		0xCF03	// Indirizzo Nodo08 peer03 su bridge02 remota Seriale RS485
 #define Nodo01_Gateway		0xAB01
 #define Nodo13_ESP01		0xAB02
-#define Nodo13_ESP01		0xAB03
+#define Nodo14_ESP01		0xAB03
 
 
 #define myvNet_address		ip_Gw[3]		// ultimo byte dell' IP address (51) è anche l'indirizzo vNet
@@ -92,7 +92,7 @@ uint8_t subnet_mask[4]    = {255, 255, 255, 0};
 
 
 
-
+/*----------------------------------VECCHIO MEMO----------------------------------------*/
 
 /*  
   SetIPAddress(ip_Gw, subnet_mask, ip_Router);    // Questo nodo sarà --> 192.168.2.51

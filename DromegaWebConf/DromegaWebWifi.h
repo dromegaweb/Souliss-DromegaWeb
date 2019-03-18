@@ -16,10 +16,6 @@
 #define WiFi_SSID               "DrHouse"
 #define WiFi_Password           "bf14473bf"
 
-#define WiFiSSID               "DrHouse"
-#define WiFiPassword           "bf14473bf"
-
-
 #endif
 
 
