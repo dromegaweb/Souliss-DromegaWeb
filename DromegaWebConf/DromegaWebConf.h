@@ -15,11 +15,11 @@
 // -------------INIZIO configurazione di rete DromegaWeb------------------------------------
 
 #define Add_Router			1     	// indirizzo ip Ethernet Router
-#define	Add_Gateway			51		// indirizzo ip Ethernet Gateway Arduino Mega  Nodo01  
-#define Add_Eth_N2			52		// indirizzo ip Ethernet Bridge01 Nodo02
-#define	Add_Eth_N3			53		// indirizzo ip Ethernet Bridge02 Nodo03
-#define	Add_Esp01_Nodo13	54		// indirizzo ip Ethernet Esp01 Nodo13 Allarme con 1 PIR
-#define	Add_Esp01_Nodo14	55		// indirizzo ip Ethernet Esp01 Nodo13 Allarme con 1 PIR
+#define	Add_Gateway			71		// indirizzo ip Ethernet Gateway Arduino Mega  Nodo01  
+#define Add_Eth_N2			72		// indirizzo ip Ethernet Bridge01 Nodo02
+#define	Add_Eth_N3			73		// indirizzo ip Ethernet Bridge02 Nodo03
+#define	Add_Esp01_Nodo13	74		// indirizzo ip Ethernet Esp01 Nodo13 Allarme con 1 PIR
+#define	Add_Esp01_Nodo14	75		// indirizzo ip Ethernet Esp01 Nodo13 Allarme con 1 PIR
 
 
 uint8_t ip_Router[4] = {192, 168, 2, Add_Router};// indirizzo router
@@ -73,10 +73,12 @@ uint8_t subnet_mask[4]    = {255, 255, 255, 0};
 							SetAsGateway(myvNet_address); \
 							SetAsPeerNode(Add_Esp01_Nodo13, 1);
 							
+#define INIT_Nodo13_TEST_stat()  SetIPAddress(ip_Nodo13, subnet_mask, ip_Gw);
+														
 #define INIT_Nodo13_TEST_din()  GetIPAddress(); \
-							SetAddress(Nodo13_ESP01, myvNet_subnet, Nodo01_Gateway);
+							    SetAddress(Nodo13_ESP01, myvNet_subnet, Nodo01_Gateway);
 							
-#define INIT_Nodo13_TEST_stat()  SetIPAddress(ip_Nodo13, subnet_mask, ip_Router);
+
 							
 							
 							  

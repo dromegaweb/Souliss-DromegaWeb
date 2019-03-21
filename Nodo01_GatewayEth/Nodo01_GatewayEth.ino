@@ -29,27 +29,37 @@
 #include "Souliss.h"
 #include "DromegaWebConf.h"
 
+// Typical
+#define ALLARME    0   
+#define INPUTPIN   0
+
 int WachDog_LED_pin = 7;        // Led di verifica funzionamento CPU
 int value = 1;                  
 
 void setup()
 {
   pinMode(WachDog_LED_pin,OUTPUT);
+  pinMode(INPUTPIN, INPUT);  // ingersso allarme
   digitalWrite(WachDog_LED_pin, value); // Accende il LED di WachDog nela fase di setup
   Initialize();
   INIT_Nodo01_TEST();
+  Set_T41(ALLARME);
 }
 
 void loop()
 {
   EXECUTEFAST() {
     UPDATEFAST();
+      FAST_510ms() {   
+                DigIn(INPUTPIN, Souliss_T4n_Alarm, ALLARME);    
+                Logic_T41(ALLARME);                                      
+          }
 
-    FAST_1110ms() {
-      value = !value;
-      digitalWrite(WachDog_LED_pin, value);        //Lampeggio di WachDog_LED nela fase di lavoro
-    }
-    
+      FAST_1110ms() {
+        value = !value;
+        digitalWrite(WachDog_LED_pin, value);        //Lampeggio di WachDog_LED nela fase di lavoro
+      }
+      
     FAST_GatewayComms();   //Elaborazione di tutte le comunicazioni con altri nodi la Souliss App
   }
   EXECUTESLOW() {
