@@ -25,9 +25,11 @@
 *                                9 -> Luce Vini
 *                               A2 -> Ventola scambio termico -> utilizzo ingresso analogico come uscita
 *                               A3 -> Ventola anti umidità    -> utilizzo ingresso analogico come uscita
+*                               A5 -> Luce ingresso cantina
 *               INPUT     ->  2,5
 *                               2 -> PIR Luci Cantina
 *                               5 -> PIR Luci Vini
+*                              A4 -> PIR Luce ingresso cantina
 *                             
 *               
 **
@@ -56,14 +58,16 @@
 #include "DromegaWebConf.h"           // Contiene set IP del nodo
 
     //TYPICALS
-#define Luci_Cantina	  0   // 1 Slot
-#define Luci_Vini       1   // 1 Slot
-#define VALVOLA_01      2   // 1 Slot
-#define VALVOLA_02      3   // 1 Slot
-#define VENTOLA_TEMP    4   // 1 Slot
-#define VENTOLA_UMID    5   // 1 Slot
-#define TEMPERATURE     6   // 2 Slot
-#define HUMIDITY        8   // 2 Slot
+#define Luci_Cantina        0   // 1 Slot
+#define Luci_Vini           1   // 1 Slot
+#define VALVOLA_01          2   // 1 Slot
+#define VALVOLA_02          3   // 1 Slot
+#define VENTOLA_TEMP        4   // 1 Slot
+#define VENTOLA_UMID        5   // 1 Slot
+#define TEMPERATURE         6   // 2 Slot
+#define HUMIDITY            8   // 2 Slot
+#define Luce_Ing_Cantina   10   // 1 Slot
+
 
     // PIN SETTING
 #define Pin_PIR_Luci_Cantina    2  // in
@@ -75,6 +79,8 @@
 #define Pin_VENTOLA_TEMP        A2  // out
 #define Pin_VENTOLA_UMID        A3  // out
 #define Pin_DHT_11              A0  // in
+#define Pin_PIR_Ing_Cantina     A4  // in
+#define Pin_Luce_Ing_Cantina    A5  // out
 
     // DHT
 #define DHTPIN Pin_DHT_11     // Per carenza di ingressi uso un pin analogico da connettere al sensore DHT11
@@ -94,6 +100,7 @@ void setup()
   // T y p i c a l s
   Set_T12(Luci_Cantina);      
   Set_T12(Luci_Vini);
+  Set_T12(Luce_Ing_Cantina);
   Set_T11(VALVOLA_01);
   Set_T11(VALVOLA_02);
   Set_T11(VENTOLA_TEMP);
@@ -103,14 +110,18 @@ void setup()
   //  I N P U T
   pinMode(Pin_PIR_Luci_Cantina, INPUT); // PIR Luci Cantina
   pinMode(Pin_PIR_Luci_Vini, INPUT);    // PIR Luci Vini
+  pinMode(Pin_PIR_Ing_Cantina, INPUT);  // PIR Luce ingresso cantina
   pinMode(Pin_DHT_11, INPUT);           // ingresso DHT 11 , sensore temp_um  OK funziona su ingresso analogico (07-08-2016)
+  
   //  O U T P U T
   pinMode(Pin_Luci_Cantina, OUTPUT);    // Luce Cantina
   pinMode(Pin_Luci_Vini, OUTPUT);       // Luce Vini    
+  pinMode(Pin_Luce_Ing_Cantina, OUTPUT);     // Luce Ingresso Cantina
   pinMode(Pin_VALVOLA_01, OUTPUT);      // Valvola irrigazione zona 01
   pinMode(Pin_VALVOLA_02, OUTPUT);      // Valvola irrigazione zona 02
   pinMode(Pin_VENTOLA_TEMP, OUTPUT);    // Ventola scambio termico -> utilizzo ingresso analogico come uscita
   pinMode(Pin_VENTOLA_UMID, OUTPUT);    // Ventola anti umidità    -> utilizzo ingresso analogico come uscita
+  
  
 }
 
@@ -121,18 +132,21 @@ void loop()
 
     FAST_90ms()  {
 
-      DigIn( Pin_PIR_Luci_Cantina, Souliss_T1n_AutoCmd + 10 , Luci_Cantina);    //PIR Luci Cantina
-      DigIn( Pin_PIR_Luci_Vini,    Souliss_T1n_AutoCmd + 10 , Luci_Vini);       //PIR Luci Vini   
-        
+      DigIn( Pin_PIR_Luci_Cantina, Souliss_T1n_AutoCmd + 10 , Luci_Cantina);       //PIR Luci Cantina
+      DigIn( Pin_PIR_Luci_Vini,    Souliss_T1n_AutoCmd + 10 , Luci_Vini);          //PIR Luci Vini   
+      DigIn( Pin_PIR_Ing_Cantina,  Souliss_T1n_AutoCmd + 10 , Luce_Ing_Cantina);   //PIR Luce ingresso cantina 
+	  
       Logic_T12(Luci_Cantina);
       Logic_T12(Luci_Vini);
+      Logic_T12(Luce_Ing_Cantina);
       Logic_T11(VALVOLA_01);
       Logic_T11(VALVOLA_02);     
       Logic_T11(VENTOLA_TEMP);
       Logic_T11(VENTOLA_UMID);
            
-      nDigOut(Pin_Luci_Cantina, Souliss_T1n_Coil, Luci_Cantina);        //Luce Cantina
-      nDigOut(Pin_Luci_Vini,    Souliss_T1n_Coil, Luci_Vini);           //Luce Vini        
+      nDigOut(Pin_Luci_Cantina,       Souliss_T1n_Coil, Luci_Cantina);        //Luce Cantina
+      nDigOut(Pin_Luci_Vini,          Souliss_T1n_Coil, Luci_Vini);           //Luce Vini
+	  nDigOut(Pin_Luce_Ing_Cantina,   Souliss_T1n_Coil, Luce_Ing_Cantina);    //Luce Ingresso Cantina   
       DigOut(Pin_VALVOLA_01,   Souliss_T1n_Coil, VALVOLA_01);           //Valvola irrigazione zona 01
       DigOut(Pin_VALVOLA_02,   Souliss_T1n_Coil, VALVOLA_02);           //Valvola irrigazione zona 02         
       DigOut(Pin_VENTOLA_TEMP, Souliss_T1n_Coil, VENTOLA_TEMP);         //Ventola scambio termico
@@ -148,6 +162,7 @@ void loop()
     FAST_7110ms() {
           Timer_T12(Luci_Cantina);
           Timer_T12(Luci_Vini);
+		  Timer_T12(Luce_Ing_Cantina);
     }
 
     FAST_PeerComms();  

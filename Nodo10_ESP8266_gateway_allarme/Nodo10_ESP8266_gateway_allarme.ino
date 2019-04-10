@@ -1,6 +1,6 @@
 /**************************************************************************
-* Utilizzo   :    Nodo 
-* Progetto   :    Nodo04 - Esp01
+* Utilizzo   :    Nodo unico allarme (Gateway)
+* Progetto   :    Nodo10 - Esp01
 * Autore     :    DromegaWeb
 * Scopo      :    Questo nodo è un sensore PIR
 * 
@@ -14,12 +14,21 @@
 #include "SoulissFramework.h"
 
 
+// **** Definisco il nome e la password della rete WiFi a cui mi connetto ****     
+#define WIFICONF_INSKETCH                //dichiarato in  #include "DromegaWebWifi.h"
+#define WiFi_SSID          "DrHouse"     //scrivi tra virgolette il nome della tua rete
+#define WiFi_Password      "bf14473bf"   //scrivi tra virgolette la password della tua rete 
+
+//#include "DromegaWebWifi.h"
+#include "DromegaWebConf.h"
+
+/*
 // Indirizzo MAC per Scheda Ethernet Nodo03
 #define MAC_INSKETCH                                           // "0xBF" identifica la mia rete BF 
 uint8_t MAC_ADDRESS[] = {0xBF, 0xBF, 0xBF, 0xBF, 0xBF, 0x04};  // l'ultimo indirizzo "0x04" identifica il Nodo04
 #define AUTO_MAC         0
 #define MAC_DEBUG        0
-
+*/
 
 // Configure the framework
 #include "bconf/MCU_ESP8266.h"          
@@ -31,9 +40,14 @@ uint8_t MAC_ADDRESS[] = {0xBF, 0xBF, 0xBF, 0xBF, 0xBF, 0x04};  // l'ultimo indir
 #include <EEPROM.h>
 
 #include "Souliss.h"
-#include "DromegaWebConf.h"
 
-//#include "C:\Users\DROMEGA2\Google Drive\Arduino\Progetti\Souliss-DromegaWeb\DromegaWebConf\DromegaWebConf.h"         // **** Define Network and private WiFi, name and password in external file ****   
+
+
+
+
+//#include "C:\Users\DROMEGA2\Documents\Arduino\libraries\DromegaWebConf\DromegaWebConf.h"         // **** Define Network  ****   
+//#include "C:\Users\DROMEGA2\Documents\Arduino\libraries\DromegaWebConf\DromegaWebWifi.h"         // **** Define private WiFi ****   
+
 
 // This identify the number of the I/O logic
 #define ALLARME    0               
@@ -45,7 +59,7 @@ uint8_t MAC_ADDRESS[] = {0xBF, 0xBF, 0xBF, 0xBF, 0xBF, 0x04};  // l'ultimo indir
 void setup()
 {   
     Initialize();
-    Souliss_SetIPAddress(ip_address_Esp01, subnet_mask, ip_gateway_Router);
+    SetIPAddress(ip_NodoTest, subnet_mask, ip_Router);
     SetAsGateway(myvNet_address);   
    
     Set_T41(ALLARME);        
@@ -64,7 +78,7 @@ void loop()
         } 
 
         FAST_GatewayComms();  // Usato solo quando questo nodo è anche Gateway                                      
-        //FAST_PeerComms();                                        
+        //FAST_PeerComms();     // Usato solo quando questo nodo è peer                                       
         
     }
 } 
